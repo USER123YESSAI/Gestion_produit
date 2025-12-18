@@ -7,6 +7,34 @@ use Illuminate\Http\Request;
 
 class ProduitController extends Controller
 {
+    // Liste des produits
+    public function index()
+    {
+        $produits = Produit::all();
+        return view('produits.index', compact('produits'));
+    }
+
+    // Formulaire de création
+    public function create()
+    {
+        return view('produits.create');
+    }
+
+    // Enregistre un nouveau produit
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nom' => 'required|string|max:255',
+            'quantite' => 'required|integer|min:0',
+            'prix_vente' => 'required|numeric|min:0',
+            'seuil_alerte' => 'nullable|integer|min:0',
+        ]);
+
+        Produit::create($request->all());
+
+        return redirect()->route('produits.index')->with('success', 'Produit ajouté avec succès.');
+    }
+
     // Formulaire d'édition
     public function edit(Produit $produit)
     {
@@ -17,9 +45,9 @@ class ProduitController extends Controller
     public function update(Request $request, Produit $produit)
     {
         $validated = $request->validate([
-            'nom'          => 'required|string|max:255',
-            'quantite'     => 'required|integer|min:0',
-            'prix_vente'   => 'required|numeric|min:0',
+            'nom' => 'required|string|max:255',
+            'quantite' => 'required|integer|min:0',
+            'prix_vente' => 'required|numeric|min:0',
             'seuil_alerte' => 'required|integer|min:0',
         ]);
 
