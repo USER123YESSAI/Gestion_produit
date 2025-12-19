@@ -56,4 +56,12 @@ class ProduitController extends Controller
         return redirect()->route('produits.index')
                          ->with('success', 'Produit mis à jour avec succès.');
     }
+
+    // AJOUTEZ CETTE MÉTHODE POUR LA SUPPRESSION (de delete-product)
+    public function destroy(Produit $produit)
+    {
+        $produit->delete();
+        return redirect()->route('produits.index')
+                         ->with('success', 'Produit supprimé avec succès.');
+    }
 }
